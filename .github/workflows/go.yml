@@ -1,4 +1,4 @@
-# This workflow will build a golang project# docker-compose.yml
+
 version: '3.8'
 services:
   secureid:
