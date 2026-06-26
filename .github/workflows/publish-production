@@ -1,0 +1,79 @@
+import { useState } from "react";
+import VerifyPanel from "./VerifyPanel";
+
+export default function Dashboard({ user, onLogout }) {
+  const [logs, setLogs] = useState([]);
+
+  // ✅ Add log entry
+  const addLog = (action, str) => {
+    const newLog = {
+      action,
+      str,
+      time: new Date().toLocaleString()
+    };
+    setLogs((prev) => [newLog, ...prev]);
+  };
+
+  return (
+    <div className="dashboard">
+      {/* HEADER */}
+      <div className="dash-header">
+        <h2>🛡️ SecureID Dashboard</h2>
+        <button onClick={onLogout}>Logout</button>
+      </div>
+
+      {/* STATS */}
+      <div className="dash-stats">
+        <div className="stat">
+          <h3>1</h3>
+          <p>Profiles</p>
+        </div>
+
+        <div className="stat">
+          <h3>{logs.length}</h3>
+          <p>Verifications</p>
+        </div>
+
+        <div className="stat">
+          <h3>Active</h3>
+          <p>Status</p>
+        </div>
+      </div>
+
+      {/* USER INFO */}
+      <div className="dash-card">
+        <h3>Account Info</h3>
+        <p><strong>Name:</strong> {user.name}</p>
+        <p><strong>Email:</strong> {user.email}</p>
+      </div>
+
+      {/* STR */}
+      <div className="dash-card">
+        <h3>Your STR</h3>
+        <div className="str-box">{user.str}</div>
+      </div>
+
+      {/* VERIFY PANEL (with logging) */}
+      <VerifyPanel onVerify={(str) => addLog("VERIFY", str)} />
+
+      {/* ACTIVITY LOG */}
+      <div className="dash-card">
+        <h3>📊 Activity Logs</h3>
+
+        {logs.length === 0 ? (
+          <p>No activity yet</p>
+        ) : (
+          <ul className="log-list">
+            {logs.map((log, i) => (
+              <li key={i}>
+                ✅ {log.action} — {log.str}
+                <br />
+                <span className="log-time">{log.time}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+}
