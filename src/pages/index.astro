@@ -1,4 +1,24 @@
----
+---# render.yaml
+services:
+  - type: web
+    name: secureid-vault
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: node server/server.js
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false  # set manually in dashboard// In your ARIA chat widget - works for ALL platforms
+const response = await fetch('/api/chat', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    model: 'claude-sonnet-4-6',
+    max_tokens: 1000,
+    system: 'You are ARIA, SecureID security advisor...',
+    messages: conversationHistory
+  })
+});
+const data = await response.json();
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import type { StarlightPageProps } from "@astrojs/starlight/props";
 import StructuralGrid from "~/components/landing/StructuralGrid.astro";
@@ -209,7 +229,11 @@ const sidebar = [
 					{ label: "Tunnel", link: "/tunnel/" },
 					{ label: "Mesh", link: "/mesh/" },
 					{ label: "Magic Transit", link: "/magic-transit/" },
-					{ label: "Magic WAN", link: "/cloudflare-wan/" },
+					{ label: "Cloudflare WAN", link: "/cloudflare-wan/" },
+					{
+						label: "Cloudflare Network Firewall",
+						link: "/cloudflare-network-firewall/",
+					},
 					{ label: "Network Interconnect", link: "/network-interconnect/" },
 					{ label: "Spectrum", link: "/spectrum/" },
 					{ label: "BYOIP", link: "/byoip/" },
